@@ -1,4 +1,3 @@
-import { genSalt, hash, compare } from "bcrypt";
 import { HTTP_STATUS } from "./constant.js";
 
 export const constructResponse = (res, responseData) => {
