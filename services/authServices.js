@@ -175,24 +175,56 @@ const updateUser = async (data) => {
   try {
     const { name, email, password, user_id } = data;
     if (user_id !== null) {
-      let updateUser = await Demo.findOneAndUpdate(
-        { _id: user_id },
-        {
-          name, email, password,
+      try {
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(password, salt);
+        let userDetail = {
+          name,
+          email,
+          password: hashPassword,
+        };
+        let updateUser = await Demo.findOneAndUpdate(
+          { _id: user_id },
+          {
+            name, email, password,
+          }
+        );
+        if (
+          updateUser.length === 0 ||
+          updateUser === undefined ||
+          updateUser === null ||
+          updateUser === ""
+        ) {
+          return errorResponse(HTTP_STATUS.NOT_FOUND, "User Not Exist", null);
+        } else {
+          let save_user = await User.findOne({ email });
+          let payload = {
+            name: save_user.name,
+            email: save_user.email,
+            password: save_user.password,
+          };
+
+          //Generate Token
+          let token = jwt.sign(payload, process.env.SECERET_KEY, {
+            expiresIn: "1d",
+          });
+
+          let result = {
+            token,
+            user: payload,
+          };
+          return successResponse(
+            result,
+            HTTP_STATUS.OK,
+            "User Updated Successfully!!!"
+          );
         }
-      );
-      if (
-        updateUser.length === 0 ||
-        updateUser === undefined ||
-        updateUser === null ||
-        updateUser === ""
-      ) {
-        return errorResponse(HTTP_STATUS.NOT_FOUND, "User Not Exist", null);
-      } else {
-        return successResponse(
-          user_id,
-          HTTP_STATUS.OK,
-          "Update User Successfully"
+      } catch (error) {
+        console.log(error);
+        return errorResponse(
+          HTTP_STATUS.INTERNAL_SERVER_ERROR,
+          "Enable to register",
+          null
         );
       }
     } else {
