@@ -88,7 +88,7 @@ const login = async (data) => {
   try {
     const { email, password } = data;
     if (email !== undefined && password !== undefined) {
-      let user = await User.findOne({ where: { email: email } });
+      let user = await User.findOne({ email });
       if (user !== null) {
         let hasPassword = user?.dataValues?.password;
         let isMatch = bcrypt.compareSync(password, hasPassword);
@@ -121,7 +121,7 @@ const login = async (data) => {
           );
         }
       } else {
-        return errorResponse(HTTP_STATUS.NO_CONTENT, "Unauthorized user", null);
+        return errorResponse(HTTP_STATUS.UNAUTHORIZED, "Unauthorized user", null);
       }
     } else {
       return errorResponse(
@@ -139,7 +139,114 @@ const login = async (data) => {
   }
 };
 
+const getUser = async (data) => {
+  try {
+    const { user_id } = data;
+    if (user_id !== null && user_id !== undefined) {
+      let user = await User.findById({ _id: user_id });
+      if (user !== null) {
+        return successResponse(
+          user,
+          HTTP_STATUS.OK,
+          "Get User Details Successfully"
+        );
+      }
+      else {
+        return errorResponse(HTTP_STATUS.NOT_FOUND, "User Not Exist", null);
+      }
+    }
+    else {
+      return errorResponse(
+        HTTP_STATUS.NO_CONTENT,
+        "User id is required",
+        null
+      );
+    }
+  } catch (error) {
+    return errorResponse(
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+}
+
+const updateUser = async (data) => {
+  try {
+    const { name, email, password, user_id } = data;
+    if (user_id !== null) {
+      let updateUser = await Demo.findOneAndUpdate(
+        { _id: user_id },
+        {
+          name, email, password,
+        }
+      );
+      if (
+        updateUser.length === 0 ||
+        updateUser === undefined ||
+        updateUser === null ||
+        updateUser === ""
+      ) {
+        return errorResponse(HTTP_STATUS.NOT_FOUND, "User Not Exist", null);
+      } else {
+        return successResponse(
+          user_id,
+          HTTP_STATUS.OK,
+          "Update User Successfully"
+        );
+      }
+    } else {
+      return errorResponse(HTTP_STATUS.UNAUTHORIZED, "Unauthorized user", null);
+    }
+  }
+  catch (error) {
+    return errorResponse(
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+}
+
+const deleteUser = async () => {
+  try {
+    const { user_id } = data;
+    if (user_id === null || user_id === undefined) {
+      return errorResponse(HTTP_STATUS.UNAUTHORIZED, "UnAuthorized User", null);
+    }
+    else {
+      let deleteUser = await User.deleteOne({ _id: id });
+      if (
+        deleteUser["deletedCount"] === 0 ||
+        deleteUser === null ||
+        deleteUser === undefined
+      ) {
+        return errorResponse(HTTP_STATUS.NOT_FOUND, "User Does Not Exist", null);
+      } else if (
+        deleteUser["deletedCount"] === 1 ||
+        deleteUser !== null ||
+        deleteUser !== undefined
+      ) {
+        return successResponse(
+          deleteUser,
+          HTTP_STATUS.OK,
+          "User Deleted Successfully"
+        );
+      }
+    }
+  } catch (error) {
+    return errorResponse(
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      null
+    );
+  }
+}
+
 export default {
   register,
   login,
+  getUser,
+  updateUser,
+  deleteUser
 };
