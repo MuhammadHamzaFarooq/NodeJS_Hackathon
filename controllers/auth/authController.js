@@ -1,7 +1,6 @@
 import authServices from "../../services/authServices.js";
 import { constructResponse } from "../../utils/helper.js";
 
-
 const register = async (req, res) => {
   const response = await authServices.register(req.body);
   return constructResponse(res, response);

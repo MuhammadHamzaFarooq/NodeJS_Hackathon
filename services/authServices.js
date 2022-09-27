@@ -27,6 +27,7 @@ const register = async (data) => {
             let newUser = await User.create(userDetail);
             let save_user = await User.findOne({ email });
             let payload = {
+              _id: save_user._id,
               name: save_user.name,
               email: save_user.email,
               password: save_user.password,
@@ -47,7 +48,6 @@ const register = async (data) => {
               "User Registered Successfully!!!"
             );
           } catch (error) {
-            console.log(error);
             return errorResponse(
               HTTP_STATUS.INTERNAL_SERVER_ERROR,
               "Enable to register",
@@ -90,12 +90,13 @@ const login = async (data) => {
     if (email !== undefined && password !== undefined) {
       let user = await User.findOne({ email });
       if (user !== null) {
-        let hasPassword = user?.dataValues?.password;
+        let hasPassword = user?.password;
         let isMatch = bcrypt.compareSync(password, hasPassword);
 
         let payload = {
-          name: user?.dataValues?.name,
-          email: user?.dataValues?.email,
+          _id: user?._id,
+          email: user?.email,
+          password: hasPassword,
         };
 
         if (isMatch) {
@@ -178,15 +179,10 @@ const updateUser = async (data) => {
       try {
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync(password, salt);
-        let userDetail = {
-          name,
-          email,
-          password: hashPassword,
-        };
-        let updateUser = await Demo.findOneAndUpdate(
+        let updateUser = await User.findOneAndUpdate(
           { _id: user_id },
           {
-            name, email, password,
+            name, email, password: hashPassword,
           }
         );
         if (
@@ -199,6 +195,7 @@ const updateUser = async (data) => {
         } else {
           let save_user = await User.findOne({ email });
           let payload = {
+            _id: save_user._id,
             name: save_user.name,
             email: save_user.email,
             password: save_user.password,
@@ -223,7 +220,7 @@ const updateUser = async (data) => {
         console.log(error);
         return errorResponse(
           HTTP_STATUS.INTERNAL_SERVER_ERROR,
-          "Enable to register",
+          "Enable to Update.",
           null
         );
       }
@@ -240,14 +237,14 @@ const updateUser = async (data) => {
   }
 }
 
-const deleteUser = async () => {
+const deleteUser = async (data) => {
   try {
     const { user_id } = data;
     if (user_id === null || user_id === undefined) {
       return errorResponse(HTTP_STATUS.UNAUTHORIZED, "UnAuthorized User", null);
     }
     else {
-      let deleteUser = await User.deleteOne({ _id: id });
+      let deleteUser = await User.deleteOne({ _id: user_id });
       if (
         deleteUser["deletedCount"] === 0 ||
         deleteUser === null ||
