@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "5e00bd90-8daf-48e3-9776-be61fdd7af5b",
+		"name": "API 's Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "SignUP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"test User\",\r\n    \"email\":\"test@gmail.com\",\r\n    \"password\":\"1234567890@@\",\r\n    \"confirmPassword\":\"1234567890@@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://custom-node-server.herokuapp.com/api/v1/auth/signup",
+							"protocol": "https",
+							"host": [
+								"custom-node-server",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzMyZWQyN2U0ZGRlNzIyNjBmMDdmZjciLCJuYW1lIjoidGVzdCBVc2VyIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJElBSURhR3d5WmdMYXJLRFR4TjN1WWVYejFJV2VHbjNwTUptcHJzMXJ6OGVxREl5cUhYMzYuIiwiaWF0IjoxNjY0MjgxODk1LCJleHAiOjE2NjQzNjgyOTV9.LLzXn1MdVK0_WgdBlzvdwuGos3sfKecCXkehnFQoXxY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"email\":\"test@gmail.com\",\r\n     \"password\":\"1234567890@@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://custom-node-server.herokuapp.com/api/v1/auth/login",
+							"protocol": "https",
+							"host": [
+								"custom-node-server",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzMyZWQyN2U0ZGRlNzIyNjBmMDdmZjciLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkSUFJRGFHd3laZ0xhcktEVHhOM3VZZVh6MUlXZUduM3BNSm1wcnMxcno4ZXFESXlxSFgzNi4iLCJpYXQiOjE2NjQyODE5MTUsImV4cCI6MTY2NDM2ODMxNX0.6hWO5Y8lb4mhbhC9R18ilCILu7LSPVFyxSf4yo9kR4k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"6332ed27e4dde72260f07ff7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/getUser",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"getUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzMyZWQyN2U0ZGRlNzIyNjBmMDdmZjciLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkSUFJRGFHd3laZ0xhcktEVHhOM3VZZVh6MUlXZUduM3BNSm1wcnMxcno4ZXFESXlxSFgzNi4iLCJpYXQiOjE2NjQyODE5MTUsImV4cCI6MTY2NDM2ODMxNX0.6hWO5Y8lb4mhbhC9R18ilCILu7LSPVFyxSf4yo9kR4k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"6332ed27e4dde72260f07ff7\",\r\n    \"name\":\"test User\",\r\n    \"email\":\"test@gmail.com\",\r\n    \"password\":\"1234567890@@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/updateUser",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzMyZWQyN2U0ZGRlNzIyNjBmMDdmZjciLCJuYW1lIjoidGVzdCBVc2VyIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJGcyWlY4cENUeXpQNWI1b2x0aFpJRHVKakgvektXcVhuamFSUThjMUZpeUU2VXV4Z0kvd0R5IiwiaWF0IjoxNjY0MjgyMzE1LCJleHAiOjE2NjQzNjg3MTV9.weTImb6HGaPm_kTqGfHYyDo2xUT9cDSJtRxteSjgcsk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"6332ed27e4dde72260f07ff7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/deleteUser",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"deleteUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
